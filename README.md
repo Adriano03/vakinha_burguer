@@ -18,3 +18,14 @@ Aula 1
 - Confguração do RestClient utilizando o Dio;
 - Para manter o codígo mais limpo, utililização de helpers para obter o tamanho da tela;
 
+Aula 2
+- Criação da Splash Page;
+- Configuração da classe de modelo;
+- Utilização do conceito repository pattern para buscar produtos;
+- Criação e implementação da tela Home Page;
+- Estruturação do projeto para trabalhar com bloc;
+- Link entre controller e repository;
+- Criação do BaseState;
+
+
+
