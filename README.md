@@ -27,5 +27,15 @@ Aula 2
 - Link entre controller e repository;
 - Criação do BaseState;
 
+Aula 3
+- Criação da tela detalhe produto;
+- Criação botão increment e decrement;
+- Adicionando produtos no carrinho;
+- Atualização na quantidade de produtos e regras de negocio;
+- Criação do botão de sacolas depois que usuário adiciona produto, botão fica na HomePage;
+- Enviar proditos para fechar pedido;
+- Montar tela de login;
+
+
 
 
