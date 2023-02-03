@@ -34,7 +34,15 @@ Aula 3
 - Atualização na quantidade de produtos e regras de negocio;
 - Criação do botão de sacolas depois que usuário adiciona produto, botão fica na HomePage;
 - Enviar proditos para fechar pedido;
-- Montar tela de login;
+- Criar tela de login;
+- Criar tela cadastro;
+
+Aula 4
+- Implementar tela login;
+- Implementar tela de cadastro;
+- Construção da tela de pedidos;
+
+
 
 
 
