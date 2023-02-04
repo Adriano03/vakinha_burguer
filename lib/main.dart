@@ -5,5 +5,5 @@ import 'package:vakinha_burguer/app/delivery_app.dart';
 Future<void> main() async {
   await Env.i.load();
 
-  runApp(const DeliveryApp());
+  runApp(DeliveryApp());
 }

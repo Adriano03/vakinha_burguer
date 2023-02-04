@@ -45,6 +45,8 @@ dependencies:
   shared_preferences: ^2.0.17
   validatorless: ^1.2.3
   flutter_awesome_select: ^6.5.0
+  flutter_native_splash: ^2.2.16
+  flutter_launcher_icons: ^0.11.0
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +60,15 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   build_runner: ^2.3.3
   match_generator: ^0.4.1
+
+flutter_icons:
+  android: true
+  ios: false
+  image_path: "assets/app/icontwo.png"
+
+flutter_native_splash:
+  color: "#140e0e"
+  image: assets/app/splash.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

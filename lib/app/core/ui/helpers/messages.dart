@@ -13,7 +13,7 @@ mixin Messages<T extends StatefulWidget> on State<T> {
   void showInfo(String message) {
     showTopSnackBar(
       Overlay.of(context),
-      CustomSnackBar.error(message: message),
+      CustomSnackBar.info(message: message),
     );
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vakinha_burguer/app/core/ui/base_state/base_state.dart';
 import 'package:vakinha_burguer/app/core/ui/widgets/delivery_appbar.dart';
 import 'package:vakinha_burguer/app/pages/home/home_controller.dart';
@@ -17,6 +18,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends BaseState<HomePage, HomeController> {
   @override
   void onReady() {
+    // Zerar usuário (deslogar);
+    // SharedPreferences.getInstance().then((value) => value.clear());
     controller.loadProducts();
   }
 
