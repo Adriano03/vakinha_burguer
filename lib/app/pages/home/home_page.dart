@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vakinha_burguer/app/core/ui/base_state/base_state.dart';
+import 'package:vakinha_burguer/app/core/ui/styles/text_styles.dart';
 import 'package:vakinha_burguer/app/core/ui/widgets/delivery_appbar.dart';
 import 'package:vakinha_burguer/app/pages/home/home_controller.dart';
 import 'package:vakinha_burguer/app/pages/home/home_state.dart';
@@ -18,15 +19,64 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends BaseState<HomePage, HomeController> {
   @override
   void onReady() {
-    // Zerar usuário (deslogar);
-    // SharedPreferences.getInstance().then((value) => value.clear());
     controller.loadProducts();
+  }
+
+  Future<void> logout() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          actionsAlignment: MainAxisAlignment.spaceAround,
+          title: Text(
+            'Deseja sair com usuário logado?',
+            style: context.textStyles.textBold,
+          ),
+          icon: const Icon(Icons.info_outline_rounded, size: 42),
+          iconColor: Colors.red,
+          actions: [
+            TextButton.icon(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(
+                Icons.close,
+                color: Colors.red,
+              ),
+              label: const Text(
+                'NÃO',
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+            TextButton.icon(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await SharedPreferences.getInstance()
+                    .then((value) => value.clear());
+              },
+              icon: const Icon(Icons.logout),
+              label: const Text('SIM'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DeliveryAppbar(),
+      appBar: DeliveryAppbar(
+        action: [
+          IconButton(
+            onPressed: logout,
+            icon: const Icon(Icons.logout),
+          ),
+        ],
+      ),
       body: BlocConsumer<HomeController, HomeState>(
         listener: (context, state) {
           state.status.matchAny(
