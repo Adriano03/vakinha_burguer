@@ -36,6 +36,7 @@ class ThemeConfig {
       border: _defaultInputBorder,
       enabledBorder: _defaultInputBorder,
       focusedBorder: _defaultInputBorder,
+      labelStyle: TextStyles.i.textRegular.copyWith(color: Colors.black),
       errorStyle: TextStyles.i.textRegular.copyWith(color: Colors.redAccent),
     ),
   );

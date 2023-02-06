@@ -56,6 +56,7 @@ class _HomePageState extends BaseState<HomePage, HomeController> {
                 Navigator.of(context).pop();
                 await SharedPreferences.getInstance()
                     .then((value) => value.clear());
+                showInfo('Usuário Saiu');
               },
               icon: const Icon(Icons.logout),
               label: const Text('SIM'),

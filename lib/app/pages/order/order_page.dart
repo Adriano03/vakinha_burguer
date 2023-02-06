@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:vakinha_burguer/app/core/extensions/formatter_extension.dart';
 import 'package:vakinha_burguer/app/core/ui/base_state/base_state.dart';
 import 'package:vakinha_burguer/app/core/ui/helpers/size_extensions.dart';
@@ -25,8 +26,9 @@ class OrderPage extends StatefulWidget {
 class _OrderPageState extends BaseState<OrderPage, OrderController> {
   final formKey = GlobalKey<FormState>();
   final addressEC = TextEditingController();
-  final documentEC = TextEditingController();
+  final documentEC = MaskedTextController(mask: '000.000.000-00');
   int? paymentTypeId;
+
 
   final paymentTypeValid = ValueNotifier<bool>(true);
 
@@ -141,6 +143,7 @@ class _OrderPageState extends BaseState<OrderPage, OrderController> {
 
   @override
   Widget build(BuildContext context) {
+  Orientation orientation = MediaQuery.of(context).orientation;
     return BlocListener<OrderController, OrderState>(
       listener: (context, state) {
         state.status.matchAny(
@@ -306,7 +309,7 @@ class _OrderPageState extends BaseState<OrderPage, OrderController> {
                         padding: const EdgeInsets.all(15),
                         child: DeliveryButton(
                           width: context.screenWidth,
-                          height: context.percentHeight(.065),
+                          height: orientation == Orientation.portrait ? context.percentHeight(.065) :  context.percentHeight(.11),
                           label: 'FINALIZAR',
                           onPressed: _submitFinish,
                         ),

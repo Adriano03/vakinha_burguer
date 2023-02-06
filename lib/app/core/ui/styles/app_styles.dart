@@ -21,6 +21,7 @@ class AppStyles {
       );
 }
 
+// Extensão para utilizar no projeto chamando pelo context Ex: context.appStyles.primaryButton;
 extension AppStylesExtension on BuildContext {
   AppStyles get appStyles => AppStyles.i;
 }
