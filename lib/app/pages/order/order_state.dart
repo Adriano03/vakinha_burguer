@@ -61,6 +61,7 @@ class OrderState extends Equatable {
   }
 }
 
+// A vantagem de extender, é que tem todos os atributos da classe OrderState, podendo adicionar novos produtos bem especificos;
 class OrderConfirmDeleteProductState extends OrderState {
   final OrderProductDto orderProduct;
   final int index;

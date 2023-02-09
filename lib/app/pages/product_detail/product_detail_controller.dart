@@ -5,12 +5,12 @@ class ProductDetailController extends Cubit<int> {
 
   ProductDetailController() : super(1);
 
-  void increment() => emit(state + 1);
-
   void inital(int amount, bool hasOrder) {
     _hasOrder = hasOrder;
     emit(amount);
   }
+
+  void increment() => emit(state + 1);
 
   void decrement() {
     if (state > (_hasOrder ? 0 : 1)) {

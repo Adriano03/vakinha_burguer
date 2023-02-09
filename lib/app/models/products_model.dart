@@ -14,6 +14,7 @@ class ProductsModel {
     required this.image,
   });
 
+  // Esse método retorna um Map<String, dynamic> com as informações dos produtos;
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -24,6 +25,7 @@ class ProductsModel {
     };
   }
 
+  // Construtor cria um objeto ProductModel a partir Map<String, dynamic>;
   factory ProductsModel.fromMap(Map<String, dynamic> map) {
     return ProductsModel(
       id: map['id']?.toInt() ?? 0,
@@ -33,9 +35,9 @@ class ProductsModel {
       image: map['image'] ?? '',
     );
   }
-
+  // Método retorna a representação do json do objeto;
   String toJson() => json.encode(toMap());
-
+  // Construtor cria um objeto ProductModel a partir de uma string json;
   factory ProductsModel.fromJson(String source) =>
       ProductsModel.fromMap(json.decode(source));
 }

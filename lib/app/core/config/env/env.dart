@@ -12,5 +12,8 @@ class Env {
   // Load() por padrão já pega o .env
   Future<void> load() => dotenv.load();
 
+  // Extrair o dado do .env
   String? operator [](String key) => dotenv.env[key];
 }
+
+// Precisa passar na raiz(main.dart) do projeto para carregar a key;

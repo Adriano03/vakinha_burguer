@@ -17,7 +17,9 @@ class ProductsRepositoryImpl implements ProductsRepository {
   @override
   Future<List<ProductsModel>> findAllProducts() async {
     try {
+      // Realiza a requisição HTTP para buscar os produtos;
       final result = await dio.unAuth().get('/products');
+      // Converte os dados da api para uma lista de ProductModel;
       return result.data
           .map<ProductsModel>((p) => ProductsModel.fromMap(p))
           .toList();

@@ -19,6 +19,8 @@ class DeliveryApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Poderia colocar o multiProvider aqui sem problemas, porém para manter o código
+    // mais organizado, foi implementando na ApplicationBinding;
     return ApplicationBinding(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -29,7 +29,6 @@ class _OrderPageState extends BaseState<OrderPage, OrderController> {
   final documentEC = MaskedTextController(mask: '000.000.000-00');
   int? paymentTypeId;
 
-
   final paymentTypeValid = ValueNotifier<bool>(true);
 
   // Forma alternativa de pegar dados que foi passado com argumento da shoppingBag;
@@ -37,64 +36,23 @@ class _OrderPageState extends BaseState<OrderPage, OrderController> {
   void onReady() {
     final products =
         ModalRoute.of(context)!.settings.arguments as List<OrderProductDto>;
+    // Passando os argumentos para o método load() na OrderController;
     controller.load(products);
   }
 
-  void _showDialogAllProduct(String text) {
+  void _showConfirmProductDialog(OrderConfirmDeleteProductState? state) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
           actionsAlignment: MainAxisAlignment.spaceAround,
-          title: Text(
-            text,
-            style: context.textStyles.textBold,
-          ),
-          icon: const Icon(Icons.info_outline_rounded, size: 42),
-          iconColor: Colors.red,
-          actions: [
-            TextButton.icon(
-              onPressed: () {
-                Navigator.of(context).pop();
-                controller.cancelDeleteProcess();
-              },
-              icon: const Icon(
-                Icons.close,
-                color: Colors.red,
-              ),
-              label: const Text(
-                'CANCELAR',
-                style: TextStyle(
-                  color: Colors.red,
-                ),
-              ),
-            ),
-            TextButton.icon(
-              onPressed: () {
-                controller.emptyBag();
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(Icons.delete_forever_outlined),
-              label: const Text('EXCLUIR'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showConfirmProductDialog(OrderConfirmDeleteProductState state) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          actionsAlignment: MainAxisAlignment.spaceAround,
-          title: Text(
-            'Remover o Produto..\n ${state.orderProduct.product.name}?',
-            style: context.textStyles.textBold,
-          ),
+          title: state != null
+              ? Text(
+                  'Remover o Produto..\n ${state.orderProduct.product.name}?',
+                  style: context.textStyles.textBold,
+                )
+              : const Text('Remover todos os produtos?'),
           icon: const Icon(Icons.info_outline_rounded, size: 42),
           iconColor: Colors.red,
           actions: [
@@ -117,7 +75,9 @@ class _OrderPageState extends BaseState<OrderPage, OrderController> {
             TextButton.icon(
               onPressed: () {
                 Navigator.of(context).pop();
-                controller.decrementProduct(state.index);
+                state != null
+                    ? controller.decrementProduct(state.index)
+                    : controller.emptyBag();
               },
               icon: const Icon(Icons.delete_forever_outlined),
               label: const Text('EXCLUIR'),
@@ -143,7 +103,7 @@ class _OrderPageState extends BaseState<OrderPage, OrderController> {
 
   @override
   Widget build(BuildContext context) {
-  Orientation orientation = MediaQuery.of(context).orientation;
+    Orientation orientation = MediaQuery.of(context).orientation;
     return BlocListener<OrderController, OrderState>(
       listener: (context, state) {
         state.status.matchAny(
@@ -172,9 +132,11 @@ class _OrderPageState extends BaseState<OrderPage, OrderController> {
           },
         );
       },
+      // Esse widget é responsável pelo botão de back no dispositivo ou a seta voltar no app;
       child: WillPopScope(
         onWillPop: () async {
           Navigator.of(context).pop(controller.state.orderProducts);
+          // O false não permite que seja possível voltas através dos botõs, assim forçando a usar o navigator passando os dados;
           return false;
         },
         child: Scaffold(
@@ -197,7 +159,7 @@ class _OrderPageState extends BaseState<OrderPage, OrderController> {
                         ),
                         IconButton(
                           onPressed: () {
-                            _showDialogAllProduct('Remover todos os produtos?');
+                            _showConfirmProductDialog(null);
                           },
                           icon: Image.asset('assets/images/trashRegular.png'),
                         ),
@@ -205,6 +167,7 @@ class _OrderPageState extends BaseState<OrderPage, OrderController> {
                     ),
                   ),
                 ),
+                // BlocSelector pega apenas um item dentro da lista, e rebuilda a tela somente se o estado for alterado;
                 BlocSelector<OrderController, OrderState,
                     List<OrderProductDto>>(
                   selector: (state) => state.orderProducts,
@@ -220,9 +183,7 @@ class _OrderPageState extends BaseState<OrderPage, OrderController> {
                                 index: index,
                                 orderProduct: orderProduct,
                               ),
-                              const Divider(
-                                color: Colors.grey,
-                              ),
+                              const SizedBox(height: 6),
                             ],
                           );
                         },
@@ -233,9 +194,12 @@ class _OrderPageState extends BaseState<OrderPage, OrderController> {
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
+                      const Divider(color: Colors.grey),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -309,7 +273,9 @@ class _OrderPageState extends BaseState<OrderPage, OrderController> {
                         padding: const EdgeInsets.all(15),
                         child: DeliveryButton(
                           width: context.screenWidth,
-                          height: orientation == Orientation.portrait ? context.percentHeight(.065) :  context.percentHeight(.11),
+                          height: orientation == Orientation.portrait
+                              ? context.percentHeight(.065)
+                              : context.percentHeight(.11),
                           label: 'FINALIZAR',
                           onPressed: _submitFinish,
                         ),

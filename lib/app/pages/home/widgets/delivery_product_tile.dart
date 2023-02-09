@@ -23,14 +23,17 @@ class DeliveryProductTile extends StatelessWidget {
     return InkWell(
       onTap: () async {
         final controller = context.read<HomeController>();
-        // Na tela de ProductDetail no navigator.pop no retorno vem os dados dos produtos;
+        // Passando produto como argumento para productDetailRouter onde foi passado como arg para ProductDetailPage;
+        // Na tela de ProductDetail foi feito um pop(product e amount) e colocado na variável orderProductResult;
         final orderProductResult =
             await Navigator.of(context).pushNamed('/productDetail', arguments: {
           'product': product,
           'order': orderProduct,
-        });
+        }); 
 
         if (orderProductResult != null) {
+          // O flutter gera um aviso quando passa o context.read<HomeController>() depois do await, então foi colocado,
+          // na váriavel controller antes do await para não ter nenhum warning;
           controller.addOrUpdateBag(orderProductResult as OrderProductDto);
         }
       },

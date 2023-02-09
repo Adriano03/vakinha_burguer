@@ -158,6 +158,7 @@ class _ProductDetailPageState
                             if (amount == 0) {
                               _showConfirmDelete(amount);
                             } else {
+                              // No pop retorna para a productDetailTile passando os product que foi adicionado;
                               Navigator.of(context).pop(
                                 OrderProductDto(
                                   product: widget.product,
@@ -167,11 +168,11 @@ class _ProductDetailPageState
                             }
                           },
                           child: Visibility(
+                            visible: amount > 0,
                             replacement: Text(
                               'Excluir Produto',
                               style: context.textStyles.textExtraBold,
                             ),
-                            visible: amount > 0,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

@@ -14,8 +14,10 @@ class HomeController extends Cubit<HomeState> {
   ) : super(const HomeState.initial());
 
   Future<void> loadProducts() async {
+    // Emite o estado de loading antes de buscar os produtos;
     emit(state.copyWith(status: HomeStateStatus.loading));
     try {
+      // Emite o estado de loaded já com os produtos carregados;
       final products = await _productsRepository.findAllProducts();
       emit(state.copyWith(status: HomeStateStatus.loaded, products: products));
     } catch (e, s) {
@@ -29,8 +31,9 @@ class HomeController extends Cubit<HomeState> {
   }
 
   void addOrUpdateBag(OrderProductDto orderProduct) {
+    // É colocado o spread [...] exclui os dados da lista e cria outros para poder notificar o bloc;
     final shoppingBag = [...state.shoppingBag];
-
+    // O indexWhere procura na lista shoppingBag que contém o mesmo produto orderProduct;
     final orderIndex = shoppingBag
         .indexWhere((orderP) => orderP.product == orderProduct.product);
 
@@ -47,6 +50,7 @@ class HomeController extends Cubit<HomeState> {
     emit(state.copyWith(shoppingBag: shoppingBag));
   }
 
+  // Atualizar sacola de produtos quando vem para a home;
   void updateBag(List<OrderProductDto> updateBag) {
     emit(state.copyWith(shoppingBag: updateBag));
   }

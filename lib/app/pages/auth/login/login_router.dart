@@ -8,6 +8,8 @@ class LoginRouter {
   static get page => MultiProvider(
         providers: [
           Provider(
+            // read() é usado para acessar um provedor que foi passado no escopop superior. Ou seja o loginController está tentando
+            // ler uma instância de AuthRepository que foi passado como Provider global em ApplicationBinding;
             create: (context) => LoginController(context.read()),
           ),
         ],

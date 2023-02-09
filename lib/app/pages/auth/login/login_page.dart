@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vakinha_burguer/app/core/ui/helpers/obscure_password.dart';
 import 'package:vakinha_burguer/app/core/ui/base_state/base_state.dart';
 import 'package:vakinha_burguer/app/core/ui/helpers/size_extensions.dart';
 import 'package:vakinha_burguer/app/core/ui/styles/text_styles.dart';
@@ -17,7 +18,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends BaseState<LoginPage, LoginController> {
-  bool _obscureS = true;
+  ObscurePassword obscureP = ObscurePassword();
   final _formKey = GlobalKey<FormState>();
   final _emailEC = TextEditingController();
   final _passwordEC = TextEditingController();
@@ -35,10 +36,15 @@ class _LoginPageState extends BaseState<LoginPage, LoginController> {
     super.dispose();
   }
 
+  // Quandi não tem rebuild de tela é usado o BlocListener;
   @override
   Widget build(BuildContext context) {
+    // LoginController é usado para controlar o fluxo de informações relacionadas ao processo de login.
+    // LoginState representa o estado atual da tela.
+    // Ou seja, o BlocListener está escutando o LoginController e reagindo as mudanças no estado LoginState;
     return BlocListener<LoginController, LoginState>(
       listener: (context, state) {
+        // Chama o status dentro de LoginState;
         state.status.matchAny(
           any: () => hideLoader(),
           login: () => showLoader(),
@@ -52,6 +58,7 @@ class _LoginPageState extends BaseState<LoginPage, LoginController> {
           },
           success: () {
             hideLoader();
+            // O true é para afirmar que o usuário fez o login, evitando algum erro caso ele volte para a HomePage;
             Navigator.pop(context, true);
           },
         );
@@ -81,27 +88,28 @@ class _LoginPageState extends BaseState<LoginPage, LoginController> {
                         ]),
                       ),
                       const SizedBox(height: 30),
-                      TextFormField(
-                        controller: _passwordEC,
-                        obscureText: _obscureS,
-                        decoration: InputDecoration(
-                            labelText: 'Senha',
-                            suffixIcon: IconButton(
-                              splashRadius: 1,
-                              onPressed: () {
-                                setState(() {
-                                  _obscureS = !_obscureS;
-                                });
-                              },
-                              icon: Icon(
-                                _obscureS
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                              ),
-                            )),
-                        validator: Validatorless.multiple([
-                          Validatorless.required('Senha obrigatório.'),
-                        ]),
+                      ValueListenableBuilder(
+                        valueListenable: obscureP,
+                        builder: (context, value, child) => TextFormField(
+                          controller: _passwordEC,
+                          obscureText: obscureP.obscurePassword,
+                          decoration: InputDecoration(
+                              labelText: 'Senha',
+                              suffixIcon: IconButton(
+                                splashRadius: 1,
+                                onPressed: () {
+                                  obscureP.toggleObscurePassword();
+                                },
+                                icon: Icon(
+                                  obscureP.obscurePassword
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
+                              )),
+                          validator: Validatorless.multiple([
+                            Validatorless.required('Senha obrigatório.'),
+                          ]),
+                        ),
                       ),
                       const SizedBox(height: 50),
                       Center(

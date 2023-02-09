@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vakinha_burguer/app/core/ui/helpers/obscure_password.dart';
 import 'package:vakinha_burguer/app/core/ui/base_state/base_state.dart';
 import 'package:vakinha_burguer/app/core/ui/helpers/size_extensions.dart';
 import 'package:vakinha_burguer/app/core/ui/styles/text_styles.dart';
@@ -17,8 +18,9 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends BaseState<RegisterPage, RegisterController> {
-  bool _obscureS = true;
-  bool _obscureCs = true;
+  final ObscurePassword obscureP = ObscurePassword();
+  final ObscurePassword obscureCp = ObscurePassword();
+
   final _formKey = GlobalKey<FormState>();
 
   final _nameEC = TextEditingController();
@@ -33,12 +35,14 @@ class _RegisterPageState extends BaseState<RegisterPage, RegisterController> {
     super.dispose();
   }
 
+  // Enviar dados do formulário para registerController;
   void _submit() {
     final valid = _formKey.currentState!.validate();
     if (!valid) return;
     controller.register(_nameEC.text, _emailEC.text, _passwordEC.text);
   }
 
+  // Quandi não tem rebuild de tela é usado o BlocListener;
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegisterController, RegisterState>(
@@ -94,49 +98,56 @@ class _RegisterPageState extends BaseState<RegisterPage, RegisterController> {
                     ]),
                   ),
                   const SizedBox(height: 30),
-                  TextFormField(
-                    controller: _passwordEC,
-                    obscureText: _obscureS,
-                    decoration: InputDecoration(
-                      labelText: 'Senha',
-                      suffixIcon: IconButton(
-                        splashRadius: 1,
-                        onPressed: () {
-                          setState(() {
-                            _obscureS = !_obscureS;
-                          });
-                        },
-                        icon: Icon(
-                          _obscureS ? Icons.visibility : Icons.visibility_off,
+                  ValueListenableBuilder(
+                    valueListenable: obscureP,
+                    builder: (context, value, child) => TextFormField(
+                      controller: _passwordEC,
+                      obscureText: obscureP.obscurePassword,
+                      decoration: InputDecoration(
+                        labelText: 'Senha',
+                        suffixIcon: IconButton(
+                          splashRadius: 1,
+                          onPressed: () {
+                            obscureP.toggleObscurePassword();
+                          },
+                          icon: Icon(
+                            obscureP.obscurePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
                         ),
                       ),
+                      validator: Validatorless.multiple([
+                        Validatorless.required('Senha obrigatório.'),
+                        Validatorless.min(6, 'Senha deve conter pelo menos 6.'),
+                      ]),
                     ),
-                    validator: Validatorless.multiple([
-                      Validatorless.required('Senha obrigatório.'),
-                      Validatorless.min(6, 'Senha deve conter pelo menos 6.'),
-                    ]),
                   ),
                   const SizedBox(height: 30),
-                  TextFormField(
-                    obscureText: _obscureCs,
-                    decoration: InputDecoration(
-                      labelText: 'Confirma Senha',
-                      suffixIcon: IconButton(
-                        splashRadius: 1,
-                        onPressed: () {
-                          setState(() {
-                            _obscureCs = !_obscureCs;
-                          });
-                        },
-                        icon: Icon(
-                          _obscureCs ? Icons.visibility : Icons.visibility_off,
+                  ValueListenableBuilder(
+                    valueListenable: obscureCp,
+                    builder: (context, value, child) => TextFormField(
+                      obscureText: obscureCp.obscurePassword,
+                      decoration: InputDecoration(
+                        labelText: 'Confirma Senha',
+                        suffixIcon: IconButton(
+                          splashRadius: 1,
+                          onPressed: () {
+                            obscureCp.toggleObscurePassword();
+                          },
+                          icon: Icon(
+                            obscureCp.obscureConfPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
                         ),
                       ),
+                      validator: Validatorless.multiple([
+                        Validatorless.required('Confirma Senha obrigatório.'),
+                        Validatorless.compare(
+                            _passwordEC, 'Senhas não conferem.')
+                      ]),
                     ),
-                    validator: Validatorless.multiple([
-                      Validatorless.required('Confirma Senha obrigatório.'),
-                      Validatorless.compare(_passwordEC, 'Senhas não conferem.')
-                    ]),
                   ),
                   const SizedBox(height: 50),
                   Center(

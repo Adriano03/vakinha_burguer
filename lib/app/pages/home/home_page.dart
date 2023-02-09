@@ -78,7 +78,9 @@ class _HomePageState extends BaseState<HomePage, HomeController> {
           ),
         ],
       ),
+      // O BlocConsumer escuta o estado HomeController e exibe o comportamento de acordo com o estado atua;
       body: BlocConsumer<HomeController, HomeState>(
+        // É executado sempre que o estado gera mudança, utiliza o pacote match para verificar o valor atual do objeto state
         listener: (context, state) {
           state.status.matchAny(
             any: () => hideLoader(),
@@ -89,6 +91,7 @@ class _HomePageState extends BaseState<HomePage, HomeController> {
             },
           );
         },
+        // Especifica quando o widget deve ser reconstruído, nesse caso apenas quando o status é inicial ou loaded;
         buildWhen: (previous, current) => current.status.matchAny(
           any: () => false,
           inital: () => true,

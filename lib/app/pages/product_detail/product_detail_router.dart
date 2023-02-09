@@ -13,6 +13,7 @@ class ProductDetailRouter {
           ),
         ],
         builder: (context, child) {
+          // Recuperar dados enviado através do Navigator em ProductDetailTile
           final args = ModalRoute.of(context)!.settings.arguments
               as Map<String, dynamic>;
           return ProductDetailPage(

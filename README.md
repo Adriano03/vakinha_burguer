@@ -32,3 +32,29 @@ Aula 3
 - Criação botão increment e decrement;
 - Adicionando produtos no carrinho;
 - Atualização na quantidade de produtos e regras de negócio;
+
+Aula 4
+- Criar e implementar tela de cadastro;
+- Regra de negócio caso o login seja expirado, pop() para a home com mensagem de aviso;
+- Criar e implementar tela de login;
+- Criar e implementar tela de order;
+- Validação formuário order;
+- Ajustar botão de increment e decrement para ser compacto;
+- Carregar os produtos cadastrados na order;
+
+Aula 5
+- Implementação authinterceptor para adicionar token na requisição;
+- Em order buscar formas de pagamento na api;
+- Atualizar sacola ao voltar para o menu;
+- Deletar produto quando incrementado para zero em order;
+- Confirmação de exclusão de um produto, ou de toda a sacola;
+- Tratamento de login expirado, quando expirar o usuário perde acesso a tela order e exibe a mensagem login expirado;
+- Contrução da página de sucesso, só é chamada quando o usuário tem produtos no carrinho preenche os campos com dados validos e clica em finalizar;
+
+Extras
+- Implementação do refreshToken para o usuário não perder acesso ao app, pelo tempo determinado na api;
+- ValueNotifier para gerênciar estado da senha e confirmar senha, fazedo que fique obscuro ou não;
+- Correções no uso do aplicativo com o dispositivo no modo paisagem (na horizontal).
+- Splash screen estava tendo overflow na horizontal, então apenas quando está na horizontal é retirado uma das imagens e redimensionado o layout da tela para ficar mais agradável;
+- Na tela de ordens estavam tendo vários problemas com o tamanho quando usado na horizontal. Então com a funcionalidade Orientation foi feito ajustes na largura do botão, na scrollView, e tamanho da tela;
+- Adição de mascara para o campo cpf em order;

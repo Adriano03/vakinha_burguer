@@ -12,22 +12,25 @@ class CustomDio extends DioForNative {
           connectTimeout: 5000,
           receiveTimeout: 60000,
         )) {
+    // Adiciona o interceptador de log à lista de interceptadores
     interceptors.add(
       LogInterceptor(
         requestBody: true,
-        responseBody: true,
+        responseBody: true, 
         requestHeader: true,
         responseHeader: true,
       ),
     );
-    _authInterceptor = AuthInterceptor();
+    _authInterceptor = AuthInterceptor(this);
   }
 
+  // Adiciona o interceptador de autenticação , para poder entrar na tela de order apenas logado;
   CustomDio auth() {
     interceptors.add(_authInterceptor);
     return this;
   }
 
+  // Remove o interceptador da auth, pois o usuário não precisa estar logado para algumas telas;
   CustomDio unAuth() {
     interceptors.remove(_authInterceptor);
     return this;

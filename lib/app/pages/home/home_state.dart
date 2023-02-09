@@ -14,10 +14,12 @@ enum HomeStateStatus {
   error,
 }
 
+// O Equatable é usado para ser comparada com outras instâncias;
 class HomeState extends Equatable {
   final HomeStateStatus status;
   final List<ProductsModel> products;
   final String? errorMessage;
+  // Sacola que recebem produtos que foram adicionado;
   final List<OrderProductDto> shoppingBag;
 
   const HomeState({
@@ -33,6 +35,8 @@ class HomeState extends Equatable {
         shoppingBag = const [],
         errorMessage = null;
 
+  // É uma lista de propriedades que são usadas para comparar instâncias de uma classe. 
+  // Qnd implementando informa ao Equatable quais as propriedades relevantes para comparação;
   @override
   List<Object?> get props => [status, products, errorMessage, shoppingBag];
 

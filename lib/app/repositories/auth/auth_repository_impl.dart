@@ -17,6 +17,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   // Login
   @override
+  //Dados vindo da LoginPage(botão submit), que atualiza o estado em LoginController e por fim passando para a API
   Future<AuthModel> login(String email, String password) async {
     try {
       final result = await dio.unAuth().post('/auth', data: {
@@ -38,6 +39,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   //Registrar
   @override
+  // Dados vindo da RegisterPage(botão submit), que atualiza o estado em registerController e por fim passando para a API;
   Future<void> register(String name, String email, String password) async {
     try {
       await dio.unAuth().post('/users', data: {
